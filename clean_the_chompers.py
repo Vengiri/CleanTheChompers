@@ -4,8 +4,10 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 17/08/2021
-# v0.1
+# v0.2
 
+import random
+import math
 
 class Character:
     """
@@ -25,8 +27,27 @@ class Character:
 
     def damage_incoming(self, damage):
         """
-        damage is an int which is howmuch damage is incoming
+        damage is an int which is how much damage is incoming
         before the characters effects are taken into account
         """
         # In later versions damage will be calculated based on effects
         self.max_hp -= damage
+
+    def damage_outcoming(self, damage):
+        """
+        damage is an int from the attack which does not include
+        effects
+        """
+        # This is the maximum % change in damage
+        DAMAGE_VARIANCE = 15
+        # Calculate how damage changes
+        damage_change = random.randint(0, DAMAGE_VARIANCE*2)
+        # Determine if increase or decrease
+        if damage_change < DAMAGE_VARIANCE:
+            # Calculate damage decrease
+            damage = math.floor(damage*((100-damage_change)/100))
+        # Calculate new damage rounded down
+        damage = math.floor(damage + (damage*(damage_change/100)))
+        # In later versions damage will be calculated with effects
+        return damage
+        
