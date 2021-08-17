@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 17/08/2021
-# v0.3
+# v0.4
 
 import random
 import math
@@ -73,6 +73,20 @@ class Player(Character):
         damage = int(input("Damage: "))
         print(self.damage_outcoming(damage))
 
+
+class Effect():
+    """
+    This class is the status effects which effect enimies and players
+    """
+    def __init__(self, duration, outcoming_modifier, incoming_modifier):
+        """
+        duration is how many turns an effect lasts for
+        outcoming_modifier is the amount it changes outcoming damage by
+        incoming_modifier is the amount it changes incoming damage by
+        """
+        self.duration = duration
+        self.outcoming_modifier = outcoming_modifier
+        self.incoming_modifier = incoming_modifier
 
 if __name__ == "__main__":
     you = Player(100)
