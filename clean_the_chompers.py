@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 17/08/2021
-# v0.2
+# v0.3
 
 import random
 import math
@@ -13,7 +13,7 @@ class Character:
     """
     This class stores information about characters in the game
     """
-    def __init__(self, max_hp):
+    def __init__(self, max_hp, name):
         """
         max_hp is an int that defines the maximum hp
         current_hp is an int that starts at max_hp 
@@ -46,8 +46,36 @@ class Character:
         if damage_change < DAMAGE_VARIANCE:
             # Calculate damage decrease
             damage = math.floor(damage*((100-damage_change)/100))
-        # Calculate new damage rounded down
-        damage = math.floor(damage + (damage*(damage_change/100)))
+        else:
+            # Calculate new damage rounded down
+            damage = math.floor(damage + (damage*(damage_change/100)))
         # In later versions damage will be calculated with effects
         return damage
+
+
+class Player(Character):
+    """
+    This class stores information about the player
+    """
+    def __init__(self, max_hp):
+        """
+        draw is the draw pile
+        discard is the discard pile
+        """
+        super().__init__(max_hp, "Player")
+        self.draw = []
+        self.discard = []
+
+    def attack(self):
+        """
+        Does an attack
+        """
+        damage = int(input("Damage: "))
+        print(self.damage_outcoming(damage))
+
+
+if __name__ == "__main__":
+    you = Player(100)
+    you.attack()
+        
         
