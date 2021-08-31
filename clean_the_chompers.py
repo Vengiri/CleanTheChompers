@@ -3,8 +3,8 @@
 # Game that is themed around dental hygene
 # Author: Jacob Lum
 # Date Created: 17/08/2021
-# Date Updated: 17/08/2021
-# v0.5
+# Date Updated: 1/09/2021
+# v0.6
 
 import random
 import math
@@ -66,11 +66,10 @@ class Player(Character):
         self.draw = []
         self.discard = []
 
-    def attack(self):
+    def attack(self, damage):
         """
         Does an attack
         """
-        damage = int(input("Damage: "))
         print(self.damage_outcoming(damage))
 
 
@@ -96,12 +95,12 @@ def menu():
     choice = ""
     # Run unti lthe player wants to exit
     while choice != "Q":
-        """
+        print("""
 Welcome to clean the chompers!
 What would you like to do?
 (P)lay
 (S)ettings
-(Q)uit"""
+(Q)uit""")
         choice = input("Enter choice: ").upper()
         # Do the coressponding thing to thier choice
         if choice == "P":
@@ -112,11 +111,25 @@ What would you like to do?
             print("Goodbye!")
         else:
             print("That wasn't a valid option")
+            print(you.attack())
+
+
+class Action:
+    """
+    This class stores information about an action the player could make
+    """
+    
+    def __init__(self, damage):
+        """Damage is how much damage it does"""
+        self.damage = damage
 
 
 if __name__ == "__main__":
-    menu()
     you = Player(100)
-    you.attack()
+    basic = Action(100)
+    you.draw.append(basic)
+    menu()
+
+
         
         
