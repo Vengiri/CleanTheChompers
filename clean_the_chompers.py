@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 17/08/2021
-# v0.4
+# v0.5
 
 import random
 import math
@@ -48,7 +48,7 @@ class Character:
             damage = math.floor(damage*((100-damage_change)/100))
         else:
             # Calculate new damage rounded down
-            damage = math.floor(damage + (damage*(damage_change/100)))
+            damage = math.floor(damage + (damage*((damage_change-DAMAGE_VARIANCE)/100)))
         # In later versions damage will be calculated with effects
         return damage
 
@@ -88,7 +88,34 @@ class Effect():
         self.outcoming_modifier = outcoming_modifier
         self.incoming_modifier = incoming_modifier
 
+
+def menu():
+    """
+    This is tha mian menu for the game
+    """
+    choice = ""
+    # Run unti lthe player wants to exit
+    while choice != "Q":
+        """
+Welcome to clean the chompers!
+What would you like to do?
+(P)lay
+(S)ettings
+(Q)uit"""
+        choice = input("Enter choice: ").upper()
+        # Do the coressponding thing to thier choice
+        if choice == "P":
+            pass
+        elif choice == "S":
+            pass
+        elif choice == "Q":
+            print("Goodbye!")
+        else:
+            print("That wasn't a valid option")
+
+
 if __name__ == "__main__":
+    menu()
     you = Player(100)
     you.attack()
         
