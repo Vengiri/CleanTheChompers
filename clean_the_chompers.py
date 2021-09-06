@@ -3,8 +3,8 @@
 # Game that is themed around dental hygene
 # Author: Jacob Lum
 # Date Created: 17/08/2021
-# Date Updated: 1/09/2021
-# v0.7
+# Date Updated: 7/09/2021
+# v0.8
 
 import random
 import math
@@ -83,7 +83,8 @@ class Effect():
     """
     This class is the status effects which effect enimies and players
     """
-    def __init__(self, duration, outcoming_modifier, incoming_modifier):
+    def __init__(self, duration, outcoming_modifier,
+                 incoming_modifier, name):
         """
         duration is how many turns an effect lasts for
         outcoming_modifier is the amount it changes outcoming damage by
@@ -92,6 +93,7 @@ class Effect():
         self.duration = duration
         self.outcoming_modifier = outcoming_modifier
         self.incoming_modifier = incoming_modifier
+        self.name = name
 
 
 def menu():
@@ -132,8 +134,12 @@ def battle_menu():
     for i in range(0,len(you.draw)):
         print(f"""
 action {i} {you.draw[i].name}""")
-    choice = input("Enter choice: ")
-    you.attack(you.draw[i].damage)
+    choice = int(input("Enter choice: "))
+    you.attack(you.draw[choice].damage)
+    # Check if there is an effect
+    if you.draw[choice].effect != None:
+        you.effects.append(you.draw[choice].effect)
+    print(you.effects[0].name)
         
 
   
@@ -142,16 +148,20 @@ class Action:
     This class stores information about an action the player could make
     """
     
-    def __init__(self, damage, name):
+    def __init__(self, damage, name, effect = None):
         """Damage is how much damage it does"""
         self.damage = damage
         self.name = name
+        self.effect = effect
 
 
 if __name__ == "__main__":
     you = Player(100)
-    basic = Action(100, "Toothbrush")
-    you.draw.append(basic)
+    toothbrush = Action(100, "Toothbrush")
+    toothpaste = Effect(0, 20, 0, "Toothpaste")
+    tube = Action(0, "Tube", toothpaste)
+    you.draw.append(toothbrush)
+    you.draw.append(tube)
     menu()
 
 
