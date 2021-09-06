@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 1/09/2021
-# v0.6
+# v0.7
 
 import random
 import math
@@ -51,6 +51,12 @@ class Character:
             damage = math.floor(damage + (damage*((damage_change-DAMAGE_VARIANCE)/100)))
         # In later versions damage will be calculated with effects
         return damage
+
+    def display_stats(self):
+        """
+        Displays the current stats of the character
+        """
+        print(f"{self.name} has {self.current_hp}hp")
 
 
 class Player(Character):
@@ -104,29 +110,47 @@ What would you like to do?
         choice = input("Enter choice: ").upper()
         # Do the coressponding thing to thier choice
         if choice == "P":
-            pass
+            battle_menu()
         elif choice == "S":
             pass
         elif choice == "Q":
             print("Goodbye!")
         else:
             print("That wasn't a valid option")
-            print(you.attack())
 
 
+def battle_menu():
+    """
+    Menu for the options a player can take in battle
+    """
+    # Display the players stats
+    you.display_stats()
+    # Create space
+    print()
+    print("Actions you can take: ")
+    # Print all the actions the player has
+    for i in range(0,len(you.draw)):
+        print(f"""
+action {i} {you.draw[i].name}""")
+    choice = input("Enter choice: ")
+    you.attack(you.draw[i].damage)
+        
+
+  
 class Action:
     """
     This class stores information about an action the player could make
     """
     
-    def __init__(self, damage):
+    def __init__(self, damage, name):
         """Damage is how much damage it does"""
         self.damage = damage
+        self.name = name
 
 
 if __name__ == "__main__":
     you = Player(100)
-    basic = Action(100)
+    basic = Action(100, "Toothbrush")
     you.draw.append(basic)
     menu()
 
