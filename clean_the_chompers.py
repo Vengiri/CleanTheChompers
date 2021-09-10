@@ -3,8 +3,8 @@
 # Game that is themed around dental hygene
 # Author: Jacob Lum
 # Date Created: 17/08/2021
-# Date Updated: 7/09/2021
-# v0.8
+# Date Updated: 10/09/2021
+# v0.9
 
 import random
 import math
@@ -139,7 +139,7 @@ action {i} {you.draw[i].name}""")
     # Check if there is an effect
     if you.draw[choice].effect != None:
         you.effects.append(you.draw[choice].effect)
-    print(you.effects[0].name)
+        print(you.effects[0].name)
         
 
   
