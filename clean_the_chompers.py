@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 10/09/2021
-# v0.10
+# v0.11
 
 import random
 import math
@@ -187,11 +187,19 @@ def battle_menu():
 
             # Check if player dies
             if you.current_hp <= 0:
-                print("Your teeth rot away into the meaningless sands of time")
+                death_message()
                 battle = False
                 
         
-        
+def death_message():
+    """
+    Prints a random death message
+    """
+    DEATH_MESSAGES = ["Your teeth rot away into the meaningless sands of time",
+                      "Your teeth shatter into a million pieces",
+                      "Gary, your dentist, Is disappointed in you. How could you do this to Gary?",
+                      "Your teeth have abandoned you"]
+    print(DEATH_MESSAGES[random.randint(0,len(DEATH_MESSAGES)-1)])
 
   
 class Action:
