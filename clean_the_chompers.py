@@ -28,7 +28,6 @@ class Character:
     def damage_incoming(self, damage):
         """
         damage is an int which is how much damage is incoming
-        before the characters effects are taken into account
         """
         # In later versions damage will be calculated based on effects
         self.max_hp -= damage
@@ -70,7 +69,6 @@ class Player(Character):
         """
         super().__init__(max_hp, "Player")
         self.draw = []
-        self.discard = []
 
     def attack(self, damage):
         """
@@ -79,7 +77,7 @@ class Player(Character):
         print(self.damage_outcoming(damage))
 
 
-class Effect():
+class Effect:
     """
     This class is the status effects which effect enimies and players
     """
@@ -94,6 +92,24 @@ class Effect():
         self.outcoming_modifier = outcoming_modifier
         self.incoming_modifier = incoming_modifier
         self.name = name
+
+
+class Enemy(Character):
+    """
+    This class is for enimies in the game
+    """
+    def __init__(self, max_hp, name, base_damage):
+        """
+        Damage is how much raw damage it deals per turn
+        """
+        super().__init__(max_hp, name)
+        self.base_damage = damage
+
+    def damage(self):
+        """
+        This returns the ammount of damage the enemy deals on this turn
+        """
+        return self.damage_outcoming(self.base_damage)
 
 
 def menu():
