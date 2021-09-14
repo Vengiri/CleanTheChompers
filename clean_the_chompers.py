@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 10/09/2021
-# v0.9
+# v0.10
 
 import random
 import math
@@ -30,13 +30,24 @@ class Character:
         damage is an int which is how much damage is incoming
         """
         # In later versions damage will be calculated based on effects
-        self.max_hp -= damage_calculated
+        self.current_hp -= damage_calculated
+        print(f"{self.name} took {damage_calculated} damage!")
 
     def damage_outcoming(self, damage):
         """
         damage is an int from the attack which does not include
         effects
         """
+        # Print the first part of the damage 
+        print(f"Base dmg of {damage} + ", end = "")
+
+        # Calculate the damage with accordance to modifiers
+        total_modifier = 0
+        for effect in self.effects:
+            total_modifier += effect.outcoming_modifier
+        modified_damage = damage * (total_modifier/100 + 1)
+        # Print the damage change from the modifier
+        print(f"{modified_damage-damage} from modifiers + ", end = "")
         # This is the maximum % change in damage
         DAMAGE_VARIANCE = 15
         # Calculate how damage changes
@@ -44,12 +55,14 @@ class Character:
         # Determine if increase or decrease
         if damage_change < DAMAGE_VARIANCE:
             # Calculate damage decrease
-            damage = math.floor(damage*((100-damage_change)/100))
+            total_damage = math.floor(modified_damage*((100-damage_change)/100))
         else:
             # Calculate new damage rounded down
-            damage = math.floor(damage + (damage*((damage_change-DAMAGE_VARIANCE)/100)))
+            total_damage = math.floor(modified_damage + (modified_damage*((damage_change-DAMAGE_VARIANCE)/100)))
         # In later versions damage will be calculated with effects
-        return damage
+        print(f"{total_damage-modified_damage} from damage variance",
+              f"for a total of {total_damage}!")
+        return total_damage
 
     def display_stats(self):
         """
@@ -155,7 +168,6 @@ def battle_menu():
             print(f"""
     action {i} {you.draw[i].name}""")
         choice = int(input("Enter choice: "))
-        you.attack(you.draw[choice].damage)
         
         # Check if there is an effect
         if you.draw[choice].effect != None:
@@ -175,7 +187,7 @@ def battle_menu():
 
             # Check if player dies
             if you.current_hp <= 0:
-                print("Your teeth rott away into the meaningless sands of time")
+                print("Your teeth rot away into the meaningless sands of time")
                 battle = False
                 
         
