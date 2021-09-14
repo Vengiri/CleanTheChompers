@@ -25,12 +25,12 @@ class Character:
         self.name = name
         self.effects = []
 
-    def damage_incoming(self, damage):
+    def damage_incoming(self, damage_calculated):
         """
         damage is an int which is how much damage is incoming
         """
         # In later versions damage will be calculated based on effects
-        self.max_hp -= damage
+        self.max_hp -= damage_calculated
 
     def damage_outcoming(self, damage):
         """
@@ -98,14 +98,14 @@ class Enemy(Character):
     """
     This class is for enimies in the game
     """
-    def __init__(self, max_hp, name, base_damage):
+    def __init__(self, max_hp, name, damage):
         """
         Damage is how much raw damage it deals per turn
         """
         super().__init__(max_hp, name)
         self.base_damage = damage
 
-    def damage(self):
+    def damage_deal(self):
         """
         This returns the ammount of damage the enemy deals on this turn
         """
@@ -141,21 +141,44 @@ def battle_menu():
     """
     Menu for the options a player can take in battle
     """
-    # Display the players stats
-    you.display_stats()
-    # Create space
-    print()
-    print("Actions you can take: ")
-    # Print all the actions the player has
-    for i in range(0,len(you.draw)):
-        print(f"""
-action {i} {you.draw[i].name}""")
-    choice = int(input("Enter choice: "))
-    you.attack(you.draw[choice].damage)
-    # Check if there is an effect
-    if you.draw[choice].effect != None:
-        you.effects.append(you.draw[choice].effect)
-        print(you.effects[0].name)
+    battle = True
+    while battle:
+        # Display the players stats
+        you.display_stats()
+        
+        # Create space
+        print()
+        print("Actions you can take: ")
+        
+        # Print all the actions the player has
+        for i in range(0,len(you.draw)):
+            print(f"""
+    action {i} {you.draw[i].name}""")
+        choice = int(input("Enter choice: "))
+        you.attack(you.draw[choice].damage)
+        
+        # Check if there is an effect
+        if you.draw[choice].effect != None:
+            you.effects.append(you.draw[choice].effect)
+            print(you.effects[0].name)
+
+        # Apply the damage to the enemy
+        cavity.damage_incoming(you.damage_outcoming(you.draw[choice].damage))
+
+        # Check if it dies
+        if cavity.current_hp <= 0:
+            print("It dies")
+            battle = False
+        else:
+            # Calculate how much damage the player takes
+            you.damage_incoming(cavity.damage_deal())
+
+            # Check if player dies
+            if you.current_hp <= 0:
+                print("Your teeth rott away into the meaningless sands of time")
+                battle = False
+                
+        
         
 
   
@@ -176,6 +199,7 @@ if __name__ == "__main__":
     toothbrush = Action(100, "Toothbrush")
     toothpaste = Effect(0, 20, 0, "Toothpaste")
     tube = Action(0, "Tube", toothpaste)
+    cavity = Enemy(300, "Cavity", 20)
     you.draw.append(toothbrush)
     you.draw.append(tube)
     menu()
