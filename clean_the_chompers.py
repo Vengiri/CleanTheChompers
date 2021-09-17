@@ -151,7 +151,7 @@ What would you like to do?
             if choice == "P":
                 self.battle_menu()
             elif choice == "S":
-                pass
+                self.settings_menu()
             elif choice == "Q":
                 print("Goodbye!")
             else:
@@ -165,6 +165,7 @@ What would you like to do?
         while battle:
             # Display the players stats
             self.you.display_stats()
+            self.cavity.display_stats()
             
             # Create space
             print()
@@ -178,7 +179,7 @@ What would you like to do?
             
             # Check if there is an effect
             if self.you.draw[choice].effect != None:
-                self.you.effects.append(you.draw[choice].effect)
+                self.you.effects.append(self.you.draw[choice].effect)
                 print(self.you.effects[0].name)
 
             # Apply the damage to the enemy
@@ -207,6 +208,39 @@ What would you like to do?
                           "Gary, your dentist, Is disappointed in you. How could you do this to Gary?",
                           "Your teeth have abandoned you"]
         print(DEATH_MESSAGES[random.randint(0,len(DEATH_MESSAGES)-1)])
+    def settings_menu(self):
+        """
+        This is a menu which provides descriptions and allows you to change diff
+        """
+        print("""
+(H)ard:
+There is no hope. Only with planning and luck can you succeed
+(N)ormal:
+You and your teeth against the world(of poor dental hygene)
+(E)asy:
+You are your dentist's favourite patient""")
+        choice = input("Enter choice: ").upper()
+        if choice == "H":
+            self.hard()
+        elif choice == "N":
+            self.normal()
+        elif choice == "E":
+            self.easy()
+        else:
+            print("That isn't valid")
+
+    def hard(self):
+        """
+        Sets the difficulty to hard
+        """
+        self.difficulty = self.hard
+        self.you = Player(100)
+        self.toothbrush = Action(100, "Finger")
+        self.toothpaste = Effect(0, 20, 0, "Sea salt")
+        self.tube = Action(0, "Tube", self.toothpaste)
+        self.cavity = Enemy(1000, "Apical Periodontitis", 20)
+        self.you.draw.append(self.toothbrush)
+        self.you.draw.append(self.tube)
 
     def normal(self):
         """
@@ -217,7 +251,20 @@ What would you like to do?
         self.toothbrush = Action(100, "Toothbrush")
         self.toothpaste = Effect(0, 20, 0, "Toothpaste")
         self.tube = Action(0, "Tube", self.toothpaste)
-        self.cavity = Enemy(300, "Cavity", 20)
+        self.cavity = Enemy(700, "Cavity", 14)
+        self.you.draw.append(self.toothbrush)
+        self.you.draw.append(self.tube)
+
+    def easy(self):
+        """
+        Sets the difficulty to easy
+        """
+        self.difficulty = self.easy
+        self.you = Player(150)
+        self.toothbrush = Action(100, "Electric Toothbrush")
+        self.toothpaste = Effect(0, 20, 0, "3 Types Toothpaste")
+        self.tube = Action(0, "Tube", self.toothpaste)
+        self.cavity = Enemy(400, "Plaque", 10)
         self.you.draw.append(self.toothbrush)
         self.you.draw.append(self.tube)
 
