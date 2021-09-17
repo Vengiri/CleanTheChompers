@@ -125,83 +125,102 @@ class Enemy(Character):
         return self.damage_outcoming(self.base_damage)
 
 
-def menu():
-    """
-    This is tha mian menu for the game
-    """
-    choice = ""
-    # Run unti lthe player wants to exit
-    while choice != "Q":
-        print("""
+class Menu():
+    def __init__(self):
+        """
+        By default this will set the difficulty to normal.
+        """
+        self.normal()
+        self.main_menu()
+        
+    def main_menu(self):
+        """
+        This is tha mian menu for the game
+        """
+        choice = ""
+        # Run unti lthe player wants to exit
+        while choice != "Q":
+            print("""
 Welcome to clean the chompers!
 What would you like to do?
-(P)lay
-(S)ettings
-(Q)uit""")
-        choice = input("Enter choice: ").upper()
-        # Do the coressponding thing to thier choice
-        if choice == "P":
-            battle_menu()
-        elif choice == "S":
-            pass
-        elif choice == "Q":
-            print("Goodbye!")
-        else:
-            print("That wasn't a valid option")
+    (P)lay
+    (S)ettings
+    (Q)uit""")
+            choice = input("Enter choice: ").upper()
+            # Do the coressponding thing to thier choice
+            if choice == "P":
+                self.battle_menu()
+            elif choice == "S":
+                pass
+            elif choice == "Q":
+                print("Goodbye!")
+            else:
+                print("That wasn't a valid option")
 
+    def battle_menu(self):
+        """
+        Menu for the options a player can take in battle
+        """
+        battle = True
+        while battle:
+            # Display the players stats
+            self.you.display_stats()
+            
+            # Create space
+            print()
+            print("Actions you can take: ")
+            
+            # Print all the actions the player has
+            for i in range(0,len(self.you.draw)):
+                print(f"""
+        action {i} {self.you.draw[i].name}""")
+            choice = int(input("Enter choice: "))
+            
+            # Check if there is an effect
+            if self.you.draw[choice].effect != None:
+                self.you.effects.append(you.draw[choice].effect)
+                print(self.you.effects[0].name)
 
-def battle_menu():
-    """
-    Menu for the options a player can take in battle
-    """
-    battle = True
-    while battle:
-        # Display the players stats
-        you.display_stats()
-        
-        # Create space
-        print()
-        print("Actions you can take: ")
-        
-        # Print all the actions the player has
-        for i in range(0,len(you.draw)):
-            print(f"""
-    action {i} {you.draw[i].name}""")
-        choice = int(input("Enter choice: "))
-        
-        # Check if there is an effect
-        if you.draw[choice].effect != None:
-            you.effects.append(you.draw[choice].effect)
-            print(you.effects[0].name)
+            # Apply the damage to the enemy
+            self.cavity.damage_incoming(self.you.damage_outcoming(self.you.draw[choice].damage))
 
-        # Apply the damage to the enemy
-        cavity.damage_incoming(you.damage_outcoming(you.draw[choice].damage))
-
-        # Check if it dies
-        if cavity.current_hp <= 0:
-            print("It dies")
-            battle = False
-        else:
-            # Calculate how much damage the player takes
-            you.damage_incoming(cavity.damage_deal())
-
-            # Check if player dies
-            if you.current_hp <= 0:
-                death_message()
+            # Check if it dies
+            if self.cavity.current_hp <= 0:
+                print("It dies")
                 battle = False
-                
-        
-def death_message():
-    """
-    Prints a random death message
-    """
-    DEATH_MESSAGES = ["Your teeth rot away into the meaningless sands of time",
-                      "Your teeth shatter into a million pieces",
-                      "Gary, your dentist, Is disappointed in you. How could you do this to Gary?",
-                      "Your teeth have abandoned you"]
-    print(DEATH_MESSAGES[random.randint(0,len(DEATH_MESSAGES)-1)])
+            else:
+                # Calculate how much damage the player takes
+                self.you.damage_incoming(self.cavity.damage_deal())
 
-  
+                # Check if player dies
+                if self.you.current_hp <= 0:
+                    self.death_message()
+                    battle = False
+        self.difficulty()
+            
+    def death_message(self):
+        """
+        Prints a random death message
+        """
+        DEATH_MESSAGES = ["Your teeth rot away into the meaningless sands of time",
+                          "Your teeth shatter into a million pieces",
+                          "Gary, your dentist, Is disappointed in you. How could you do this to Gary?",
+                          "Your teeth have abandoned you"]
+        print(DEATH_MESSAGES[random.randint(0,len(DEATH_MESSAGES)-1)])
+
+    def normal(self):
+        """
+        Sets the difficulty to normal
+        """
+        self.difficulty = self.normal
+        self.you = Player(100)
+        self.toothbrush = Action(100, "Toothbrush")
+        self.toothpaste = Effect(0, 20, 0, "Toothpaste")
+        self.tube = Action(0, "Tube", self.toothpaste)
+        self.cavity = Enemy(300, "Cavity", 20)
+        self.you.draw.append(self.toothbrush)
+        self.you.draw.append(self.tube)
+
 class Action:
     """
     This class stores information about an action the player could make
@@ -213,17 +232,6 @@ class Action:
         self.name = name
         self.effect = effect
 
-
+# Main routine
 if __name__ == "__main__":
-    you = Player(100)
-    toothbrush = Action(100, "Toothbrush")
-    toothpaste = Effect(0, 20, 0, "Toothpaste")
-    tube = Action(0, "Tube", toothpaste)
-    cavity = Enemy(300, "Cavity", 20)
-    you.draw.append(toothbrush)
-    you.draw.append(tube)
-    menu()
-
-
-        
-        
+    Menu()
