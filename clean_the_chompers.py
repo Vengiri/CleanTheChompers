@@ -3,11 +3,12 @@
 # Game that is themed around dental hygene
 # Author: Jacob Lum
 # Date Created: 17/08/2021
-# Date Updated: 10/09/2021
-# v0.11
+# Date Updated: 21/09/2021
+# v0.12
 
 import random
 import math
+
 
 class Character:
     """
@@ -16,7 +17,7 @@ class Character:
     def __init__(self, max_hp, name):
         """
         max_hp is an int that defines the maximum hp
-        current_hp is an int that starts at max_hp 
+        current_hp is an int that starts at max_hp
         name is the name of the character
         effects is a blank list
         """
@@ -38,8 +39,8 @@ class Character:
         damage is an int from the attack which does not include
         effects
         """
-        # Print the first part of the damage 
-        print(f"Base dmg of {damage} + ", end = "")
+        # Print the first part of the damage
+        print(f"Base dmg of {damage} + ", end="")
 
         # Calculate the damage with accordance to modifiers
         total_modifier = 0
@@ -47,7 +48,7 @@ class Character:
             total_modifier += effect.outcoming_modifier
         modified_damage = damage * (total_modifier/100 + 1)
         # Print the damage change from the modifier
-        print(f"{modified_damage-damage} from modifiers + ", end = "")
+        print(f"{modified_damage-damage} from modifiers + ", end="")
         # This is the maximum % change in damage
         DAMAGE_VARIANCE = 15
         # Calculate how damage changes
@@ -55,10 +56,12 @@ class Character:
         # Determine if increase or decrease
         if damage_change < DAMAGE_VARIANCE:
             # Calculate damage decrease
-            total_damage = math.floor(modified_damage*((100-damage_change)/100))
+            total_damage = math.floor(modified_damage*
+                                      ((100-damage_change)/100))
         else:
             # Calculate new damage rounded down
-            total_damage = math.floor(modified_damage + (modified_damage*((damage_change-DAMAGE_VARIANCE)/100)))
+            total_damage = math.floor(modified_damage +
+                                      (modified_damage*((damage_change-DAMAGE_VARIANCE)/100)))
         # In later versions damage will be calculated with effects
         print(f"{total_damage-modified_damage} from damage variance",
               f"for a total of {total_damage}!")
@@ -132,7 +135,7 @@ class Menu():
         """
         self.normal()
         self.main_menu()
-        
+
     def main_menu(self):
         """
         This is tha mian menu for the game
@@ -166,15 +169,15 @@ What would you like to do?
             # Display the players stats
             self.you.display_stats()
             self.cavity.display_stats()
-            
+
             # Create space
             print()
 
             choice = -1
-            while choice < 1 or choice > len(self.you.draw)+ 1:
+            while choice < 1 or choice > len(self.you.draw) + 1:
                 print("Actions you can take: ")
                 # Print all the actions the player has
-                for i in range(1,len(self.you.draw)+1):
+                for i in range(1, len(self.you.draw)+1):
                     print(f"""
             action {i} {self.you.draw[i-1].name}""")
                 while True:
@@ -183,14 +186,15 @@ What would you like to do?
                         break
                     except:
                         print("That is not a valid number")
-            
+
             # Check if there is an effect
-            if self.you.draw[choice-1].effect != None:
+            if self.you.draw[choice-1].effect is not None:
                 self.you.effects.append(self.you.draw[choice-1].effect)
                 print(self.you.effects[0].name)
 
             # Apply the damage to the enemy
-            self.cavity.damage_incoming(self.you.damage_outcoming(self.you.draw[choice-1].damage))
+            self.cavity.damage_incoming(self.you.damage_outcoming(
+                self.you.draw[choice-1].damage))
 
             # Check if it dies
             if self.cavity.current_hp <= 0:
@@ -205,19 +209,22 @@ What would you like to do?
                     self.death_message()
                     battle = False
         self.difficulty()
-            
+
     def death_message(self):
         """
         Prints a random death message
         """
-        DEATH_MESSAGES = ["Your teeth rot away into the meaningless sands of time",
+        DEATH_MESSAGES = ["Your teeth rot away into the meaningless sands of "
+                          "time",
                           "Your teeth shatter into a million pieces",
-                          "Gary, your dentist, Is disappointed in you. How could you do this to Gary?",
+                          "Gary, your dentist, Is disappointed in you. How "
+                          "could you do this to Gary?",
                           "Your teeth have abandoned you"]
-        print(DEATH_MESSAGES[random.randint(0,len(DEATH_MESSAGES)-1)])
+        print(DEATH_MESSAGES[random.randint(0, len(DEATH_MESSAGES)-1)])
+
     def settings_menu(self):
         """
-        This is a menu which provides descriptions and allows you to change diff
+        This is a menu which allows you to change diff
         """
         print("""
 (H)ard:
@@ -277,12 +284,13 @@ You are your dentist's favourite patient""")
         self.you.draw.append(self.toothbrush)
         self.you.draw.append(self.tube)
 
+
 class Action:
     """
     This class stores information about an action the player could make
     """
-    
-    def __init__(self, damage, name, effect = None):
+
+    def __init__(self, damage, name, effect=None):
         """Damage is how much damage it does"""
         self.damage = damage
         self.name = name
