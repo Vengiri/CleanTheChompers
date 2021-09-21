@@ -235,10 +235,10 @@ You are your dentist's favourite patient""")
         """
         self.difficulty = self.hard
         self.you = Player(100)
-        self.toothbrush = Action(100, "Finger")
-        self.toothpaste = Effect(0, 20, 0, "Sea salt")
-        self.tube = Action(0, "Tube", self.toothpaste)
-        self.cavity = Enemy(1000, "Apical Periodontitis", 20)
+        self.toothbrush = Action(100, "Sandpaper")
+        self.toothpaste = Effect(0, 50, 0, "Sea salt")
+        self.tube = Action(0, "Divine Seasalt", self.toothpaste)
+        self.cavity = Enemy(2000, "Apical Periodontitis", 10)
         self.you.draw.append(self.toothbrush)
         self.you.draw.append(self.tube)
 
