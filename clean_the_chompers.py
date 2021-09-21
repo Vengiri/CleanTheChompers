@@ -4,7 +4,7 @@
 # Author: Jacob Lum
 # Date Created: 17/08/2021
 # Date Updated: 21/09/2021
-# v0.12
+# v0.13
 
 import random
 import math
@@ -56,12 +56,13 @@ class Character:
         # Determine if increase or decrease
         if damage_change < DAMAGE_VARIANCE:
             # Calculate damage decrease
-            total_damage = math.floor(modified_damage*
+            total_damage = math.floor(modified_damage *
                                       ((100-damage_change)/100))
         else:
             # Calculate new damage rounded down
             total_damage = math.floor(modified_damage +
-                                      (modified_damage*((damage_change-DAMAGE_VARIANCE)/100)))
+                                      (modified_damage*((
+                                          damage_change-DAMAGE_VARIANCE)/100)))
         # In later versions damage will be calculated with effects
         print(f"{total_damage-modified_damage} from damage variance",
               f"for a total of {total_damage}!")
