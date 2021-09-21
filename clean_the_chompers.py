@@ -226,15 +226,17 @@ There is no hope. Only with planning and luck can you succeed
 You and your teeth against the world(of poor dental hygene)
 (E)asy:
 You are your dentist's favourite patient""")
-        choice = input("Enter choice: ").upper()
-        if choice == "H":
-            self.hard()
-        elif choice == "N":
-            self.normal()
-        elif choice == "E":
-            self.easy()
-        else:
-            print("That isn't valid")
+        choice = ""
+        while choice not in ("H", "N", "E"):
+            choice = input("Enter choice: ").upper()
+            if choice == "H":
+                self.hard()
+            elif choice == "N":
+                self.normal()
+            elif choice == "E":
+                self.easy()
+            else:
+                print("That isn't valid")
 
     def hard(self):
         """
