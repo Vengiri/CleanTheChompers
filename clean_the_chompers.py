@@ -169,21 +169,28 @@ What would you like to do?
             
             # Create space
             print()
-            print("Actions you can take: ")
-            
-            # Print all the actions the player has
-            for i in range(0,len(self.you.draw)):
-                print(f"""
-        action {i} {self.you.draw[i].name}""")
-            choice = int(input("Enter choice: "))
+
+            choice = -1
+            while choice < 1 or choice > len(self.you.draw)+ 1:
+                print("Actions you can take: ")
+                # Print all the actions the player has
+                for i in range(1,len(self.you.draw)+1):
+                    print(f"""
+            action {i} {self.you.draw[i-1].name}""")
+                while True:
+                    try:
+                        choice = int(input("Enter choice: "))
+                        break
+                    except:
+                        print("That is not a valid number")
             
             # Check if there is an effect
-            if self.you.draw[choice].effect != None:
-                self.you.effects.append(self.you.draw[choice].effect)
+            if self.you.draw[choice-1].effect != None:
+                self.you.effects.append(self.you.draw[choice-1].effect)
                 print(self.you.effects[0].name)
 
             # Apply the damage to the enemy
-            self.cavity.damage_incoming(self.you.damage_outcoming(self.you.draw[choice].damage))
+            self.cavity.damage_incoming(self.you.damage_outcoming(self.you.draw[choice-1].damage))
 
             # Check if it dies
             if self.cavity.current_hp <= 0:
