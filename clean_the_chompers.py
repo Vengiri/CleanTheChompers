@@ -81,8 +81,7 @@ class Player(Character):
     """
     def __init__(self, max_hp):
         """
-        draw is the draw pile
-        discard is the discard pile
+        draw is the acrions you can take
         """
         super().__init__(max_hp, "Player")
         self.draw = []
